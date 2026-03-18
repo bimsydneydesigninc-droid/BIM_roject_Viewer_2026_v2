@@ -1,47 +1,28 @@
-// import { initializeApp, getApp, getApps } from "firebase/app";
-// import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 
 
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+
+//Alex original RTDB config
 // const firebaseConfig = {
-//   apiKey: "AIzaSyCARQA115jjgKq8MFK9h-s8lgztwgrA29g",
+//   apiKey: "AIzaSyBMTnvGuPzveNWDs87Mtw5brECuqk_oJ5M",
 //   authDomain: "revit-api-test.firebaseapp.com",
 //   databaseURL: "https://revit-api-test-default-rtdb.asia-southeast1.firebasedatabase.app",
 //   projectId: "revit-api-test",
 //   storageBucket: "revit-api-test.firebasestorage.app",
 //   messagingSenderId: "117903387594",
-//   appId: "1:117903387594:web:1a73a574579e225376fd33",
-//   measurementId: "G-YHWNFV6WY8"
+//   appId: "1:117903387594:web:ce35ba202acf7aec76fd33"
 // };
-// // const firebaseConfig = {
-// //   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-// //   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-// //   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-// //   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-// //   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-// //   appId: import.meta.env.VITE_FIREBASE_APP_ID,
-// //   databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL
-// // };
-
-// const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-// export const db = getFirestore(app);
-
-// // Use emulator in dev
-// if (import.meta.env.VITE_USE_EMULATOR === "true" && window.location.hostname === "localhost") {
-//   connectFirestoreEmulator(db, "localhost", 5173);
-// }
-
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBMTnvGuPzveNWDs87Mtw5brECuqk_oJ5M",
-  authDomain: "revit-api-test.firebaseapp.com",
-  databaseURL: "https://revit-api-test-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "revit-api-test",
-  storageBucket: "revit-api-test.firebasestorage.app",
-  messagingSenderId: "117903387594",
-  appId: "1:117903387594:web:ce35ba202acf7aec76fd33"
+  apiKey: "AIzaSyBILynm5cuRy3OUBTIUa08yMQJDqaNiKMU",
+  authDomain: "bim-project-management.firebaseapp.com",
+  databaseURL: "https://bim-project-management-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "bim-project-management",
+  storageBucket: "bim-project-management.firebasestorage.app",
+  messagingSenderId: "505754871867",
+  appId: "1:505754871867:web:f40767fe3d9840cc80541e",
+  measurementId: "G-XHM2FWRB6K"
 };
 
 // Initialize Firebase
