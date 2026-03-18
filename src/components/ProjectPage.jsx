@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { ref, get, set } from 'firebase/database';
+import { ref, get, set, onValue } from 'firebase/database';
 import { db } from '../util/firebase';
 import ButtonAppBar from './ButtonAppBar';
 import { Paper } from '@mui/material';
@@ -11,6 +11,10 @@ import Button from '@mui/material/Button';
 import Icon from '@mui/icons-material/ArrowBackIosNew';
 import TextField from '@mui/material/TextField';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 export default function ProjectPage() {
   const { state } = useLocation();
@@ -19,6 +23,35 @@ export default function ProjectPage() {
   const [loading, setLoading] = useState(!state?.row);
   const [error, setError] = useState(null);
   const [editingId, setEditingId] = useState(null);
+  const [projectNames, setProjectNames] = useState([]);
+
+  useEffect(() => {
+    const projectsRef = ref(db, "ProjectData/1754289286238");
+    const unsubscribe = onValue(projectsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data && typeof data === 'object') {
+        // Helper to extract name safely inside effect
+        const getVal = (obj, ...keys) => {
+          if (!obj) return undefined;
+          for (const k of keys) {
+            if (Object.prototype.hasOwnProperty.call(obj, k) && obj[k] !== undefined) return obj[k];
+          }
+          return undefined;
+        };
+
+        const codes = Object.values(data)
+          .map(p => getVal(p,'Project Code  ', 'projectCode', 'project_code', 'code'))
+          .filter(n => n);
+        const names = Object.values(data)
+          .map(p => getVal(p,'Project Name ', 'Project Name', 'projectName', 'project name', 'name'))
+          .filter(n => n);
+        setProjectNames(codes.concat(...names));
+        console.log("Project names loaded:", codes.concat(names));
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
 
   useEffect(() => {
     if (!project && id) {
@@ -100,11 +133,52 @@ export default function ProjectPage() {
   if (loading) return <div>Loading project…</div>;
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
+
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
   return (
     <div>
       <ButtonAppBar />
+      <Box sx={{  backgroundColor: '#fafafa' }}>
+        <Box sx={{  width: '80%', margin: '2px'}}>
+          {/* <Typography variant="h5" sx={{ fontWeight: 100, marginBottom: 1, color: '#000000' }}>
+            Select a Project
+          </Typography> */}
+         
+        </Box>
+        <FormControl fullWidth  sx={{  width: '40%', margin: '10px', boxShadow: 4,  }}>
+          <InputLabel id="demo-simple-select-label">DI Project List</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={age}
+            label="Age"
+            onChange={handleChange}
+            MenuProps={MenuProps}
+          >
+            {projectNames.map((name, index) => (
+              <MenuItem key={index} value={name}>{name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
-      <Box sx={{ padding: 3, width: '40%', margin: '30px', boxShadow: 4, borderRadius: 3, border: '1px solid #000000' }}>
+      <Box sx={{ padding: 1, width: '40%', margin: '30px', boxShadow: 4, borderRadius: 3, border: '1px solid #000000' }}>
         {/* <Button onClick={() => window.history.back()} variant="outlined" sx={{
           backgroundColor: '#000000', color: '#f0f0f0', borderRadius: '8px',
           boxShadow: 8,
