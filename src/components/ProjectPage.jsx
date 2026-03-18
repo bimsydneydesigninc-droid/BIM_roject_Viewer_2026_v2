@@ -15,6 +15,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import TreeView from '@mui/lab/TreeView';
+import TreeItem from '@mui/lab/TreeItem';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 export default function ProjectPage() {
   const { state } = useLocation();
@@ -46,7 +50,7 @@ export default function ProjectPage() {
           .map(p => getVal(p,'Project Name ', 'Project Name', 'projectName', 'project name', 'name'))
           .filter(n => n);
         setProjectNames(codes.concat(...names));
-        console.log("Project names loaded:", codes.concat(names));
+        // console.log("Project names loaded:", codes.concat(names));
       }
     });
     return () => unsubscribe();
@@ -80,6 +84,22 @@ export default function ProjectPage() {
       if (Object.prototype.hasOwnProperty.call(obj, k) && obj[k] !== undefined) return obj[k];
     }
     return undefined;
+  };
+
+  const renderTree = (nodes, parentId = 'root') => {
+    if (!nodes || typeof nodes !== 'object') return null;
+
+    return Object.entries(nodes).map(([key, value]) => {
+      const nodeId = `${parentId}-${key}`;
+      const isObject = typeof value === 'object' && value !== null;
+      const label = isObject ? key : `${key}: ${String(value)}`;
+
+      return (
+        <TreeItem key={nodeId} nodeId={nodeId} label={label}>
+          {isObject ? renderTree(value, nodeId) : null}
+        </TreeItem>
+      );
+    });
   };
 
   const columns = [
@@ -177,6 +197,18 @@ export default function ProjectPage() {
           </Select>
         </FormControl>
       </Box>
+
+
+
+      <Box sx={{ minHeight: 180, flexGrow: 1, maxWidth: 300 }}>
+      <TreeView
+        aria-label="file system navigator"
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+      >
+        {project ? renderTree(project) : <TreeItem nodeId="no-data" label="No Project Selected" />}
+      </TreeView>
+    </Box>
 
       <Box sx={{ padding: 1, width: '40%', margin: '30px', boxShadow: 4, borderRadius: 3, border: '1px solid #000000' }}>
         {/* <Button onClick={() => window.history.back()} variant="outlined" sx={{

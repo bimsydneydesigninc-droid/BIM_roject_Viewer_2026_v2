@@ -7,14 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.8",
-    "@mui/material": "^7.3.8",
+    "@mui/lab": "^7.0.1-beta.23",
+    "@mui/material": "^7.3.9",
     "@mui/x-data-grid": "^8.27.1",
+    "@mui/x-tree-view": "^8.27.2",
     "firebase": "^12.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
